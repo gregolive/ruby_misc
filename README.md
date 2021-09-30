@@ -1,3 +1,3 @@
 # ruby_misc
 
-A collection of scripts to practice Ruby.
+A collection of methods built to practice Ruby.
