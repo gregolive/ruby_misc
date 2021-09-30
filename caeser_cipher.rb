@@ -1,3 +1,5 @@
+# Returns a caesar cipher given a string and shift value
+
 def caesar_cipher(string, shift)
   # array of a to z both lowercase and uppercase
   low_alphabet = ("a".."z").to_a
