@@ -1,35 +1,39 @@
-# BUBBLE SORT - Sorting Algorithm
-
 # frozen_string_literal: true
 
-def bubble_sort(array)
-  n = array.length # have to pass through n-1 times
-  iteration = 0 # counter for the number of passes
+# BUBBLE SORT - Sorting Algorithm
+class BubbleSort
+  def initialize(array)
+    @array = array
+    @iteration = 0
+    @changes = 0 # counter for num of changes per iteration
+  end
 
-  while iteration < n
-    changes = 0 # counter for num of changes per iteration
+  def sort
+    while @iteration < @array.length
+      check_element # compare each element to the element to its right
+      return p @array if @changes.zero? # if no changes were made then sorting is finished
 
-    # compare each element to the element to its right
-    array.each do |element|
-      current_index = array.index(element)
+      @iteration += 1
+    end
+    p array
+  end
+
+  def check_element
+    @changes = 0
+    @array.each do |element|
+      current_index = @array.index(element)
 
       # don't have to check last element and an additional element on each pass
-      break if current_index >= (n - 1 - iteration)
+      break if current_index >= (@array.length - 1 - @iteration)
 
       # if right element is smaller swap elements
-      next unless element > array[current_index + 1]
+      next unless element > @array[current_index + 1]
 
-      array[current_index] = array[current_index + 1]
-      array[current_index + 1] = element
-      changes += 1
+      @array[current_index] = @array[current_index + 1]
+      @array[current_index + 1] = element
+      @changes += 1
     end
-
-    # if no changes were made then sorting is finished
-    return p array if changes.zero?
-
-    iteration += 1
   end
-  p array
 end
 
-bubble_sort([4, 3, 78, 2, 0, 2])
+BubbleSort.new([4, 3, 78, 2, 0, 2]).sort
