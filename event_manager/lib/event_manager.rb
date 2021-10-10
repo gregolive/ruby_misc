@@ -89,6 +89,6 @@ contents.each do |row|
   legislators = legislators_by_zipcode(zipcode)
 
   form_letter = erb_template.result(binding)
-  
+
   save_thank_you_letters(id, form_letter)
 end
