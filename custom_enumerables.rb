@@ -78,4 +78,68 @@ module Enumerable
     end
     false
   end
+
+  # NONE?
+  def my_none?(arg = "")
+    if block_given?
+      self.my_each do |element|
+        return false if yield(element)
+      end  
+    else
+      if arg == ""
+        self.my_each do |element|
+          return false if element
+        end
+      else
+        self.my_each do |element|
+          if arg.is_a?(Regexp) 
+            return false if element.match?(arg)
+          else 
+            return false if element.is_a?(arg)
+          end
+        end
+      end
+    end
+    true
+  end
+
+  # COUNT
+  def my_count(count = 0)
+    if block_given?
+      self.my_each { |element| count += 1 if yield(element) }
+    else
+      self.my_each { count += 1 }
+    end
+    count
+  end
+
+  # MAP
+  def my_map
+    output = Array.new()
+    self.my_each { |element| output << yield(element) }
+    output
+  end
+
+  # INJECT
+  def my_inject(*args)
+    if args.count == 2
+      total = args[0]
+      operator = args[1]
+    elsif args.count == 1
+      args[0].is_a?(Integer) ? total = args[0] : operator = args[0]
+    else args.count == 0
+      total = self.to_a[0]
+    end
+
+    if block_given?
+      self.my_each_with_index do |element, index|
+        total = yield(total,element) unless index == 0 && total == 0
+      end
+    else
+      self.my_each_with_index do |element, index|
+        total = total.send(operator,element) unless index == 0 && total == 0
+      end
+    end
+    total
+  end
 end
