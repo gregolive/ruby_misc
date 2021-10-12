@@ -18,25 +18,31 @@ A Caesar cipher is a type of substitution cipher in which each letter in the pla
 
 Live demo on [Replit](https://replit.com/@gregolive/Caesar-Cipher) 👈
 
-## 3. Event Manager
+## 3. Custom Enumerables
 
-A tutuorial from the Odin Project to practice Ruby I/O and Google APIs.
+Recreating some of Ruby's built-in enumerables—methods for searching, traversal, and sorting collections—to gain a deeper understanding of blocks and procs.
+
+Live demo on [Replit](https://replit.com/@gregolive/Custom-Enumerables) 👈
+
+## 4. Event Manager
+
+A tutorial from the Odin Project to practice Ruby I/O and Google APIs.
 
 The goal is to find the government representatives of each attendee of an upcoming event based on their zip code. The information for the attendees is contained in a CSV and needs to be checked for validity. Using their address and the GoogleCivic API, the government representatives are then appended to an ERB template.
 
-## 4. Stock Picker
+## 5. Stock Picker
 
 Determines the best day to have bought and then sold a stock given an array of it's price history.
 
 Live demo on [Replit](https://replit.com/@gregolive/Stock-Picker) 👈
 
-## 5. Substrings
+## 6. Substrings
 
 A method to determine the frequency of substrings contained within a string.
 
 Live demo on [Replit](https://replit.com/@gregolive/Substrings) 👈
 
-## 6. Typing Practice
+## 7. Typing Practice
 
 Typing practice for beginners.
 

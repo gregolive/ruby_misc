@@ -114,32 +114,40 @@ module Enumerable
   end
 
   # MAP
-  def my_map
+  def my_map(*a_proc)
     output = Array.new()
-    self.my_each { |element| output << yield(element) }
+    if defined? a_proc
+      self.my_each { |element| output << a_proc[0].call(element) }
+    else
+      self.my_each { |element| output << yield(element) }
+    end
     output
   end
 
   # INJECT
   def my_inject(*args)
+    total = self.to_a[0]
     if args.count == 2
       total = args[0]
       operator = args[1]
     elsif args.count == 1
       args[0].is_a?(Integer) ? total = args[0] : operator = args[0]
-    else args.count == 0
-      total = self.to_a[0]
     end
 
     if block_given?
       self.my_each_with_index do |element, index|
-        total = yield(total,element) unless index == 0 && total == 0
+        total = yield(total,element) unless index == 0 && !args[0].is_a?(Integer)
       end
     else
       self.my_each_with_index do |element, index|
-        total = total.send(operator,element) unless index == 0 && total == 0
+        total = total.send(operator,element) unless index == 0 && !args[0].is_a?(Integer)
       end
     end
     total
   end
+end
+
+# to test my_inject
+def multiply_els(array)
+  array.my_inject(:*)
 end
