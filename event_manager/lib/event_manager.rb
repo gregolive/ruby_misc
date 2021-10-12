@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'csv'
 require 'google/apis/civicinfo_v2'
 require 'erb'
@@ -12,25 +14,25 @@ end
 
 def clean_phone_number(number)
   plain_num = number.delete('^0-9')
-  plain_num.slice!(0) if (plain_num.length == 11 && plain_num[0,1] == "1")
+  plain_num.slice!(0) if plain_num.length == 11 && plain_num[0, 1] == '1'
   plain_num.length == 10 ? plain_num : nil
 end
 
 def date_to_hour(date)
-  Time.strptime(date, "%m/%d/%Y %k:%M").hour
+  Time.strptime(date, '%m/%d/%Y %k:%M').hour
 end
 
 def date_to_day(date)
-  Time.strptime(date, "%m/%d/%Y %k:%M").wday
+  Time.strptime(date, '%m/%d/%Y %k:%M').wday
 end
 
 def add_time(hash, key)
-  if hash.has_key?(key) == false
+  if hash.key?(key) == false
     hash[key] = 1
   else
     hash[key] += 1
   end
-  hash.sort_by{ |k, v| -v }.to_h
+  hash.sort_by { |_k, v| -v }.to_h
 end
 
 def legislators_by_zipcode(zip)
@@ -41,9 +43,9 @@ def legislators_by_zipcode(zip)
     legislators = civic_info.representative_info_by_address(
       address: zip,
       levels: 'country',
-      roles: ['legislatorUpperBody', 'legislatorLowerBody']
+      roles: %w[legislatorUpperBody legislatorLowerBody]
     ).officials
-  rescue
+  rescue StandardError
     'You can find your representatives by visiting www.commoncause.org/take-action/find-elected-officials'
   end
 end
