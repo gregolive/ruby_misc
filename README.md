@@ -30,19 +30,25 @@ A tutorial from the Odin Project to practice Ruby I/O and Google APIs.
 
 The goal is to find the government representatives of each attendee of an upcoming event based on their zip code. The information for the attendees is contained in a CSV and needs to be checked for validity. Using their address and the GoogleCivic API, the government representatives are then appended to an ERB template.
 
-## 5. Stock Picker
+## 5. Recursion
+
+A collection of recursive Ruby methods made to practice putting recursion into practice.
+
+Live demo on [Replit](https://replit.com/@gregolive/Recursion) 👈
+
+## 6. Stock Picker
 
 Determines the best day to have bought and then sold a stock given an array of it's price history.
 
 Live demo on [Replit](https://replit.com/@gregolive/Stock-Picker) 👈
 
-## 6. Substrings
+## 7. Substrings
 
 A method to determine the frequency of substrings contained within a string.
 
 Live demo on [Replit](https://replit.com/@gregolive/Substrings) 👈
 
-## 7. Typing Practice
+## 8. Typing Practice
 
 Typing practice for beginners.
 
