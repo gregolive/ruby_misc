@@ -30,25 +30,33 @@ A tutorial from the Odin Project to practice Ruby I/O and Google APIs.
 
 The goal is to find the government representatives of each attendee of an upcoming event based on their zip code. The information for the attendees is contained in a CSV and needs to be checked for validity. Using their address and the GoogleCivic API, the government representatives are then appended to an ERB template.
 
-## 5. Recursion
+## 5. Merge Sort
+
+Merge sort is a divide and conquer (recursive) sorting algorithm.
+
+First the array is divided into the smallest unit (1 element), then each element is compared with the adjacent list to sort and the two adjacent lists are merged. Finally all the elements are sorted and merged.
+
+Live demo on [Replit](https://replit.com/@gregolive/Merge-Sort) 👈
+
+## 6. Recursion
 
 A collection of recursive Ruby methods made to practice putting recursion into practice.
 
 Live demo on [Replit](https://replit.com/@gregolive/Recursion) 👈
 
-## 6. Stock Picker
+## 7. Stock Picker
 
 Determines the best day to have bought and then sold a stock given an array of it's price history.
 
 Live demo on [Replit](https://replit.com/@gregolive/Stock-Picker) 👈
 
-## 7. Substrings
+## 8. Substrings
 
 A method to determine the frequency of substrings contained within a string.
 
 Live demo on [Replit](https://replit.com/@gregolive/Substrings) 👈
 
-## 8. Typing Practice
+## 9. Typing Practice
 
 Typing practice for beginners.
 
