@@ -1,41 +1,38 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
+# rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 
 # Merge Sort Algorithm
 def merge_sort(array)
   return array if array.length <= 1
 
-  # sort the left half of the array
-  left_half = array[0..((array.length / 2) - 1)]
-  left_half = merge_sort(left_half) if left_half.length > 2
-  left_half[0], left_half[1] = left_half[1], left_half[0] if left_half.length != 1 && left_half[0] > left_half[1]
-
-  # sort the right half of the array
-  right_half = array[(array.length / 2)..-1]
-  right_half = merge_sort(right_half) if right_half.length > 2
-  right_half[0], right_half[1] = right_half[1], right_half[0] if right_half.length != 1 && right_half[0] > right_half[1]
-
-  # merge sorted halves
-  order_arrays(left_half, right_half)
+  left = merge_sort(array[0..((array.length / 2) - 1)])
+  right = merge_sort(array[(array.length / 2)..-1])
+  merge(left, right)
 end
 
-def order_arrays(array1, array2, new_array = [])
-  until array1.length.zero? && array2.length.zero?
+def merge(array1, array2, merged = [])
+  until array1.empty? && array2.empty?
     if array1[0].nil?
-      new_array.push(array2[0])
+      merged.push(array2[0])
       array2.delete_at(0)
     elsif array2[0].nil? || array1[0] < array2[0]
-      new_array.push(array1[0])
+      merged.push(array1[0])
       array1.delete_at(0)
     else
-      new_array.push(array2[0])
+      merged.push(array2[0])
       array2.delete_at(0)
     end
   end
-  new_array
+  merged
 end
 
-p merge_sort([8, 15, 1, 7, 3, 2, 6, 4, 9, 5, 12])
+array = []
+rand(30).times do
+  array << rand(30)
+end
 
-# rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
+p array
+p merge_sort(array)
+
+# rubocop:enable Metrics/MethodLength, Metrics/AbcSize
