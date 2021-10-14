@@ -2,13 +2,15 @@
 
 # Display error messages to the console
 module DisplayErrors
+  private
+
   # error messages
   def err_empty_list
-    "#{@name} is empty!"
+    "The list is empty!"
   end
 
   def err_no_entry(index)
-    "#{@name} does not contain #{index} entries."
+    "The list does not contain #{index} entries."
   end
 end
 
@@ -59,6 +61,20 @@ class LinkedList
     @@entries += 1
   end
 
+  # inserts a new node at a given index (add to end if index is greater than entries)
+  def insert_at(value, index)
+    if @head.nil?  || index > @@entries
+      append(value)
+    elsif index == 1
+      prepend(value)
+    else
+      prev, cur = search_for(index)
+      prev.next_node = value
+      value.next_node = cur
+      @@entries += 1
+    end
+  end
+
   # returns the total number of nodes in the list
   def size
     @@entries
@@ -78,19 +94,7 @@ class LinkedList
   def at(index)
     return err_no_entry(index) if index < 1 || index > @@entries
 
-    search_for(index).value
-  end
-
-  def search_for(index)
-    return @head if index == 1
-
-    cur = @head
-    index -= 1
-    while index > 0
-      cur = cur.next_node
-      index -= 1
-    end
-    return cur
+    search_for(index)[1].value
   end
 
   # removes the last element from the list
@@ -103,6 +107,15 @@ class LinkedList
     else
       @tail = nil
     end
+    @@entries -= 1
+  end
+
+  # removes the node at the given index
+  def remove_at(index)
+    return err_no_entry(index) if index > @@entries
+
+    prev, cur = search_for(index)
+    prev.next_node = cur.next_node
     @@entries -= 1
   end
 
@@ -139,25 +152,26 @@ class LinkedList
     end
     return output += "nil"
   end
+
+  private
+
+  def search_for(index)
+    cur = @head
+    prev = nil
+    while index - 1 > 0
+      prev = cur
+      cur = cur.next_node
+      index -= 1
+    end
+    return [prev, cur]
+  end
 end
 
 my_list = LinkedList.new
-value1 = Node.new(30)
-value2 = Node.new(20)
-value3 = Node.new(10)
+rand(1..2).times {
+  my_list.append(Node.new(rand(100)))
+  my_list.prepend(Node.new(rand(100)))
+  my_list.insert_at(Node.new(rand(100)),rand(1..5))
+}
 
-my_list.append(value1)
-my_list.prepend(value2)
-my_list.append(value3)
-
-puts my_list.size
-puts my_list.head
-puts my_list.at(2)
-puts my_list.tail
-
-p my_list.find(30)
-p my_list.contains?(15)
-
-puts my_list.to_s
-my_list.pop
 puts my_list.to_s
