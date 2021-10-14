@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/MethodLength, Layout/LineLength
+# rubocop:disable Metrics/MethodLength, Layout/LineLength, Lint/UselessAssignment
 
 # A collection of recursive methods
 
@@ -26,7 +26,7 @@ end
 def collatz(num, count = 0)
   return count if num <= 1
 
-  num.even? ? collatz(num / 2, count += 1) : collatz(3 * num + 1, count += 1)
+  num.even? ? collatz(num / 2, count + 1) : collatz(3 * num + 1, count + 1)
 end
 
 # Factorial
@@ -115,4 +115,4 @@ roman_mapping = {
   1 => 'I'
 }
 
-# rubocop:enable Metrics/MethodLength, Layout/LineLength
+# rubocop:enable Metrics/MethodLength, Layout/LineLength, Lint/UselessAssignment

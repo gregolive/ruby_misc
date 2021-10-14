@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
+# rubocop:disable Style/ClassVars
+
+# Linked List Data Structure
+
 # Display error messages to the console
 module DisplayErrors
   private
 
   # error messages
   def err_empty_list
-    "The list is empty!"
+    'The list is empty!'
   end
 
   def err_no_entry(index)
@@ -28,8 +32,6 @@ end
 class LinkedList
   include DisplayErrors
 
-  attr_reader :head
-
   @@entries = 0
 
   def initialize
@@ -41,11 +43,10 @@ class LinkedList
   def append(value)
     if @head.nil?
       @head = value
-      @tail = value
     else
       @tail.next_node = value
-      @tail = value
     end
+    @tail = value
     @@entries += 1
   end
 
@@ -63,7 +64,7 @@ class LinkedList
 
   # inserts a new node at a given index (add to end if index is greater than entries)
   def insert_at(value, index)
-    if @head.nil?  || index > @@entries
+    if @head.nil? || index > @@entries
       append(value)
     elsif index == 1
       prepend(value)
@@ -101,12 +102,8 @@ class LinkedList
   def pop
     return err_empty_list if @head.nil?
 
-    if @@entries == 1
-      @head = nil
-      @tail = nil
-    else
-      @tail = nil
-    end
+    @head = nil if @@entries == 1
+    @tail = nil
     @@entries -= 1
   end
 
@@ -132,9 +129,10 @@ class LinkedList
 
     cur = @head
     index = 1
-    while !cur.nil?
+    until cur.nil?
       break if cur.value == value
-      cur = cur.next_node;
+
+      cur = cur.next_node
       index += 1
     end
     cur.nil? ? nil : index
@@ -143,14 +141,14 @@ class LinkedList
   # print list objects as strings
   def to_s
     cur = @head
-    output = ""
+    output = ''
     count = 0
     while count < @@entries
       output += "( #{cur.value} ) -> "
       cur = cur.next_node
       count += 1
     end
-    return output += "nil"
+    "#{output}nil"
   end
 
   private
@@ -158,20 +156,22 @@ class LinkedList
   def search_for(index)
     cur = @head
     prev = nil
-    while index - 1 > 0
+    while (index - 1).positive?
       prev = cur
       cur = cur.next_node
       index -= 1
     end
-    return [prev, cur]
+    [prev, cur]
   end
 end
 
 my_list = LinkedList.new
-rand(1..2).times {
+rand(1..2).times do
   my_list.append(Node.new(rand(100)))
   my_list.prepend(Node.new(rand(100)))
-  my_list.insert_at(Node.new(rand(100)),rand(1..5))
-}
+  my_list.insert_at(Node.new(rand(100)), rand(1..5))
+end
 
 puts my_list.to_s
+
+# rubocop:enable Style/ClassVars
