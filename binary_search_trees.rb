@@ -15,22 +15,30 @@ class Node
 end
 
 class Tree
+  attr_reader :array
 
   def initialize(array)
     @array = array.uniq
-    @root = nil
+    @root = build_tree
   end
 
-  def build_tree
+  def build_tree(array = @array, start = 0, finish = array.length - 1)
+    return if start > finish
 
+    mid = (start + finish) / 2
+    root = Node.new(array[mid])
+    root.left_child = build_tree(array, start, mid-1)
+    root.right_child = build_tree(array, mid+1, finish)
+    return root
+  end
+
+  def draw_tree(node = @root, prefix = '', is_left = true)
+    draw_tree(node.right_child, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right_child
+    puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
+    draw_tree(node.left_child, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left_child
   end
 end
 
-array = []
-10.times { |num|
-  array.push(Node.new(num))
-  num += 1
-}
-Tree.new(array)
-
-p array
+my_tree = Tree.new([1,2,3,4,5,6,7,8,9])
+my_tree.build_tree
+puts my_tree.draw_tree
