@@ -4,8 +4,7 @@
 class Node
   include Comparable
 
-  attr_accessor :left, :right
-  attr_reader :data
+  attr_accessor :data, :left, :right
 
   def initialize(data)
     @data = data
@@ -46,14 +45,48 @@ class Tree
 
     if data < cur.data
       insert(data, cur.left, cur)
-    else
+    elsif data > cur.data
       insert(data, cur.right, cur)
     end
+    return cur
+  end
+
+  def delete(data, cur = @root, prev = nil)
+    return cur if cur.nil?
+
+    if data < cur.data
+      delete(data, cur.left, cur)
+    elsif data > cur.data
+      delete(data, cur.right, cur)
+    else
+      # delete node with one or no children
+      if cur.left.nil?
+        data < prev.data ? prev.left = cur.right : prev.right = cur.right
+      elsif cur.right.nil?
+        data < prev.data ? prev.left = cur.left : prev.right = cur.left
+      else
+        # delete node with two children
+        replacement = node_min_child(cur.right)
+        cur.data = replacement.data
+        delete(replacement.data, cur.right)
+      end
+    end
+  end
+
+  def node_min_child(node = @root)
+    cur = node
+    until cur.left.nil?
+      cur = cur.left
+    end
+    return cur
   end
 end
 
 my_tree = Tree.new([1,3,4,6,7,8,9])
 puts my_tree.draw_tree
 
-p my_tree.insert(2)
+my_tree.insert(0.5)
+puts my_tree.draw_tree
+
+my_tree.delete(6)
 puts my_tree.draw_tree
