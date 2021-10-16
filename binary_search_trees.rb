@@ -124,20 +124,39 @@ class Tree
     array = inorder(root.right, array)
     array.push(root.data)
   end
+
+  def depth(target, cur = @root, layers = 0)
+    return nil if !find(target)
+    return layers if cur.data == target
+
+    layers += 1
+    if !cur.left.nil? && target < cur.data
+      layers = depth(target, cur.left, layers)
+    elsif !cur.right.nil? && target > cur.data
+      layers = depth(target, cur.right, layers)
+    end
+    return layers
+  end
+
+  def height(node, height = 0)
+    node = find(node) if node.is_a? Integer
+    return 0 if node.nil?
+    
+    left_height = height(node.left, height)
+    right_height = height(node.right, height)
+    return [left_height, right_height].max + 1
+  end
+
+  def balanced?
+    left = height(@root.left)
+    right = height(@root.right)
+    (left - right).abs <= 1 ? true : false
+  end
 end
 
-my_tree = Tree.new([1,3,4,6,7,8,9])
+my_tree = Tree.new([1,3,4,6,7,8,9,10,11])
+my_tree.insert(5)
+my_tree.insert(5.5)
 puts my_tree.draw_tree
 
-my_tree.insert(2)
-puts my_tree.draw_tree
-
-my_tree.delete(6)
-puts my_tree.draw_tree
-
-puts my_tree.find(8)
-
-p my_tree.level_order
-p my_tree.preorder
-p my_tree.inorder
-p my_tree.postorder
+p my_tree.balanced?
