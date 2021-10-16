@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/MethodLength, Layout/LineLength
+
 # Typing categories
 module Categories
   def categories
@@ -99,3 +101,5 @@ class Test
 end
 
 Test.new.start
+
+# rubocop:enable Metrics/MethodLength, Layout/LineLength

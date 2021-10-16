@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/MethodLength
+
 require 'csv'
 require 'google/apis/civicinfo_v2'
 require 'erb'
@@ -40,7 +42,7 @@ def legislators_by_zipcode(zip)
   civic_info.key = 'AIzaSyClRzDqDh5MsXwnCWi0kOiiBivP6JsSyBw'
 
   begin
-    legislators = civic_info.representative_info_by_address(
+    civic_info.representative_info_by_address(
       address: zip,
       levels: 'country',
       roles: %w[legislatorUpperBody legislatorLowerBody]
@@ -94,3 +96,5 @@ contents.each do |row|
 
   save_thank_you_letters(id, form_letter)
 end
+
+# rubocop:enable Metrics/MethodLength

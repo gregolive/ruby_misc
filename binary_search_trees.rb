@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# rubocop:disable Style/MethodLength, Metrics/ClassLength, Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+
+# Balanced BST Data Structure
+
 # Add a new node to the tree
 class Node
   include Comparable
@@ -12,6 +16,7 @@ class Node
   end
 end
 
+# Build BST
 class Tree
   attr_accessor :array
   attr_reader :size
@@ -26,15 +31,15 @@ class Tree
 
     mid = (start + finish) / 2
     root = Node.new(array[mid])
-    root.left = build_tree(array, start, mid-1)
-    root.right = build_tree(array, mid+1, finish)
-    return root
+    root.left = build_tree(array, start, mid - 1)
+    root.right = build_tree(array, mid + 1, finish)
+    root
   end
 
-  def draw_tree(node = @root, prefix = '', is_left = true)
-    draw_tree(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
+  def draw_tree(node = @root, prefix = '', is_left: true)
+    draw_tree(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", is_left: false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
-    draw_tree(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
+    draw_tree(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", is_left: true) if node.left
   end
 
   def insert(data, cur = @root, prev = nil)
@@ -48,7 +53,7 @@ class Tree
     elsif data > cur.data
       insert(data, cur.right, cur)
     end
-    return cur
+    cur
   end
 
   def delete(data)
@@ -63,36 +68,30 @@ class Tree
       delete_node(data, cur.left, cur)
     elsif data > cur.data
       delete_node(data, cur.right, cur)
-    else
+    elsif cur.left.nil?
       # delete node with one or no children
-      if cur.left.nil?
-        data < prev.data ? prev.left = cur.right : prev.right = cur.right
-      elsif cur.right.nil?
-        data < prev.data ? prev.left = cur.left : prev.right = cur.left
-      else
-        # delete node with two children
-        replacement = min_in_node(cur.right)
-        cur.data = replacement
-        delete_node(replacement, cur.right)
-      end
+      data < prev.data ? prev.left = cur.right : prev.right = cur.right
+    elsif cur.right.nil?
+      data < prev.data ? prev.left = cur.left : prev.right = cur.left
+    else
+      # delete node with two children
+      replacement = min_in_node(cur.right)
+      cur.data = replacement
+      delete_node(replacement, cur.right)
     end
-    return cur
+    cur
   end
 
   def min_in_node(node = @root)
     cur = node
-    until cur.left.nil?
-      cur = cur.left
-    end
-    return cur.data
+    cur = cur.left until cur.left.nil?
+    cur.data
   end
 
   def find(data)
     cur = @root
-    until cur.nil? || cur.data == data
-      cur.data > data ? cur = cur.left : cur = cur.right
-    end
-    return cur.nil? ? nil : cur
+    cur = cur.data > data ? cur.left : cur.right until cur.nil? || cur.data == data
+    cur.nil? ? nil : cur
   end
 
   def level_order(root = @root, array = [], queue = [root])
@@ -103,35 +102,35 @@ class Tree
       queue.push(root.left).push(root.right)
     end
     queue.delete(root)
-    array = level_order(queue[0], array, queue)
+    level_order(queue[0], array, queue)
   end
 
   def preorder(root = @root, array = [])
     return array if root.nil?
 
     array.push(root.data)
-    array = inorder(root.left, array)
-    array = inorder(root.right, array)
+    inorder(root.left, array)
+    inorder(root.right, array)
   end
 
   def inorder(root = @root, array = [])
     return array if root.nil?
-    
-    array = inorder(root.left, array)
+
+    inorder(root.left, array)
     array.push(root.data)
-    array = inorder(root.right, array)
+    inorder(root.right, array)
   end
 
   def postorder(root = @root, array = [])
     return array if root.nil?
-    
-    array = inorder(root.left, array)
-    array = inorder(root.right, array)
+
+    inorder(root.left, array)
+    inorder(root.right, array)
     array.push(root.data)
   end
 
   def depth(target, cur = @root, layers = 0)
-    return nil if !find(target)
+    return nil unless find(target)
     return layers if cur.data == target
 
     layers += 1
@@ -140,22 +139,22 @@ class Tree
     elsif !cur.right.nil? && target > cur.data
       layers = depth(target, cur.right, layers)
     end
-    return layers
+    layers
   end
 
   def height(node, height = 0)
     node = find(node) if node.is_a? Integer
     return 0 if node.nil?
-    
+
     left_height = height(node.left, height)
     right_height = height(node.right, height)
-    return [left_height, right_height].max + 1
+    [left_height, right_height].max + 1
   end
 
   def balanced?
     left = height(@root.left)
     right = height(@root.right)
-    (left - right).abs <= 1 ? true : false
+    (left - right).abs <= 1
   end
 
   def rebalance
@@ -170,12 +169,12 @@ def test_tree
   puts tree.draw_tree
   puts "Tree is balanced? #{tree.balanced?}\n\n"
 
-  puts "Elements in level, pre, post, and in order..."
+  puts 'Elements in level, pre, post, and in order...'
   p tree.level_order
   p tree.preorder
   p tree.postorder
   p tree.inorder
-  
+
   puts "\nAdding new elements..."
   Array.new(5) { rand(101..200) }.each { |num| tree.insert(num) }
   puts tree.draw_tree
@@ -186,7 +185,7 @@ def test_tree
   puts tree.draw_tree
   puts "Tree is balanced? #{tree.balanced?}\n\n"
 
-  puts "Elements in level, pre, post, and in order..."
+  puts 'Elements in level, pre, post, and in order...'
   p tree.level_order
   p tree.preorder
   p tree.postorder
@@ -194,3 +193,5 @@ def test_tree
 end
 
 test_tree
+
+# rubocop:enable Style/MethodLength, Metrics/ClassLength, Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
