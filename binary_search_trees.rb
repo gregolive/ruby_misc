@@ -109,8 +109,8 @@ class Tree
     return array if root.nil?
 
     array.push(root.data)
-    inorder(root.left, array)
-    inorder(root.right, array)
+    preorder(root.left, array)
+    preorder(root.right, array)
   end
 
   def inorder(root = @root, array = [])
@@ -124,8 +124,8 @@ class Tree
   def postorder(root = @root, array = [])
     return array if root.nil?
 
-    inorder(root.left, array)
-    inorder(root.right, array)
+    postorder(root.left, array)
+    postorder(root.right, array)
     array.push(root.data)
   end
 
