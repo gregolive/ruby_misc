@@ -66,27 +66,78 @@ class Tree
         data < prev.data ? prev.left = cur.left : prev.right = cur.left
       else
         # delete node with two children
-        replacement = node_min_child(cur.right)
-        cur.data = replacement.data
-        delete(replacement.data, cur.right)
+        replacement = min_in_node(cur.right)
+        cur.data = replacement
+        delete(replacement, cur.right)
       end
     end
+    return cur
   end
 
-  def node_min_child(node = @root)
+  def min_in_node(node = @root)
     cur = node
     until cur.left.nil?
       cur = cur.left
     end
-    return cur
+    return cur.data
+  end
+
+  def find(data)
+    cur = @root
+    until cur.nil? || cur.data == data
+      cur.data > data ? cur = cur.left : cur = cur.right
+    end
+    return cur.nil? ? nil : cur
+  end
+
+  def level_order(root = @root, array = [], queue = [root])
+    return array if queue.empty?
+
+    unless root.nil?
+      array.push(root.data)
+      queue.push(root.left).push(root.right)
+    end
+    queue.delete(root)
+    array = level_order(queue[0], array, queue)
+  end
+
+  def preorder(root = @root, array = [])
+    return array if root.nil?
+
+    array.push(root.data)
+    array = inorder(root.left, array)
+    array = inorder(root.right, array)
+  end
+
+  def inorder(root = @root, array = [])
+    return array if root.nil?
+    
+    array = inorder(root.left, array)
+    array.push(root.data)
+    array = inorder(root.right, array)
+  end
+
+  def postorder(root = @root, array = [])
+    return array if root.nil?
+    
+    array = inorder(root.left, array)
+    array = inorder(root.right, array)
+    array.push(root.data)
   end
 end
 
 my_tree = Tree.new([1,3,4,6,7,8,9])
 puts my_tree.draw_tree
 
-my_tree.insert(0.5)
+my_tree.insert(2)
 puts my_tree.draw_tree
 
 my_tree.delete(6)
 puts my_tree.draw_tree
+
+puts my_tree.find(8)
+
+p my_tree.level_order
+p my_tree.preorder
+p my_tree.inorder
+p my_tree.postorder
