@@ -13,15 +13,15 @@ class Node
 end
 
 class Tree
-  attr_reader :array, :size
+  attr_accessor :array
+  attr_reader :size
 
   def initialize(array)
     @array = array.uniq.sort
-    @size = array.length
     @root = build_tree
   end
 
-  def build_tree(array = @array, start = 0, finish = @size - 1)
+  def build_tree(array = @array, start = 0, finish = @array.length - 1)
     return if start > finish
 
     mid = (start + finish) / 2
@@ -39,7 +39,7 @@ class Tree
 
   def insert(data, cur = @root, prev = nil)
     if cur.nil?
-      @size += 1
+      @array.push(data)
       return data < prev.data ? prev.left = Node.new(data) : prev.right = Node.new(data)
     end
 
@@ -51,13 +51,18 @@ class Tree
     return cur
   end
 
-  def delete(data, cur = @root, prev = nil)
+  def delete(data)
+    delete_node(data)
+    @array.delete(data)
+  end
+
+  def delete_node(data, cur = @root, prev = nil)
     return cur if cur.nil?
 
     if data < cur.data
-      delete(data, cur.left, cur)
+      delete_node(data, cur.left, cur)
     elsif data > cur.data
-      delete(data, cur.right, cur)
+      delete_node(data, cur.right, cur)
     else
       # delete node with one or no children
       if cur.left.nil?
@@ -68,7 +73,7 @@ class Tree
         # delete node with two children
         replacement = min_in_node(cur.right)
         cur.data = replacement
-        delete(replacement, cur.right)
+        delete_node(replacement, cur.right)
       end
     end
     return cur
@@ -152,11 +157,40 @@ class Tree
     right = height(@root.right)
     (left - right).abs <= 1 ? true : false
   end
+
+  def rebalance
+    @array = inorder
+    @root = build_tree
+  end
 end
 
-my_tree = Tree.new([1,3,4,6,7,8,9,10,11])
-my_tree.insert(5)
-my_tree.insert(5.5)
-puts my_tree.draw_tree
+# Test class methods
+def test_tree
+  tree = Tree.new(Array.new(15) { rand(1..100) })
+  puts tree.draw_tree
+  puts "Tree is balanced? #{tree.balanced?}\n\n"
 
-p my_tree.balanced?
+  puts "Elements in level, pre, post, and in order..."
+  p tree.level_order
+  p tree.preorder
+  p tree.postorder
+  p tree.inorder
+  
+  puts "\nAdding new elements..."
+  Array.new(5) { rand(101..200) }.each { |num| tree.insert(num) }
+  puts tree.draw_tree
+  puts "Tree is balanced? #{tree.balanced?}\n\n"
+
+  puts "\nRebalancing..."
+  tree.rebalance
+  puts tree.draw_tree
+  puts "Tree is balanced? #{tree.balanced?}\n\n"
+
+  puts "Elements in level, pre, post, and in order..."
+  p tree.level_order
+  p tree.preorder
+  p tree.postorder
+  p tree.inorder
+end
+
+test_tree

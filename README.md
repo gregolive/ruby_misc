@@ -2,7 +2,15 @@
 
 A collection of methods and projects built to practice Ruby.
 
-## 1. Bubble Sort
+## 1. Binary Search Trees
+
+A binary search tree (BST) is a type of data structure that stores data in an organized, non-linear way, resulting in faster lookup times compared to linear data structure like arrays and linked lists.
+
+This class is an implementation of a balanced BST, meaning the height of a node children differ by 1 at most. The class contains various methods for adding, removing, balancing and printing the tree.
+
+Live demo on [Replit](https://replit.com/@gregolive/Binary-Search-Trees) 👈
+
+## 2. Bubble Sort
 
 Bubble sort is a simple sorting algorithm that repeatedly steps through a list, compares adjacent elements and swaps them if they are in the wrong order. The pass through the list is repeated until the list is sorted.
 
